@@ -1,0 +1,123 @@
+site_name: Helm
+site_description: EVE Online 开源舰队管理平台 — 插件化架构，高可扩展性
+site_url: https://YOUR_GITHUB_USERNAME.github.io/helm-docs/
+repo_url: https://github.com/YOUR_GITHUB_USERNAME/helm
+repo_name: helm
+edit_uri: ""
+copyright: >
+  Copyright &copy; 2024 Helm Contributors —
+  <a href="https://www.gnu.org/licenses/old-licenses/gpl-2.0.html">GPL-2.0 License</a>
+
+theme:
+  name: material
+  language: zh
+  palette:
+    - scheme: default
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-night
+        name: 切换深色模式
+    - scheme: slate
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-sunny
+        name: 切换浅色模式
+  font:
+    text: false
+    code: false
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.top
+    - navigation.footer
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.code.annotate
+    - content.tooltips
+  icon:
+    repo: fontawesome/brands/github
+
+extra_css:
+  - stylesheets/extra.css
+
+plugins:
+  - search:
+      lang: zh
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.inlinehilite
+  - pymdownx.tabbed:
+      alternate_style: true
+  - admonition
+  - pymdownx.details
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+      title: 目录
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+nav:
+  - 首页: index.md
+  - 概览:
+    - 什么是 Helm: overview/index.md
+    - 功能特性: overview/features.md
+    - 系统架构: overview/architecture.md
+  - 快速开始:
+    - 安装部署: getting-started/index.md
+    - 配置参考: getting-started/configuration.md
+  - 用户指南:
+    - 概述: user-guide/index.md
+    - EVE SSO 登录: user-guide/authentication.md
+    - 控制台: user-guide/dashboard.md
+    - 角色管理: user-guide/characters.md
+    - 军团管理: user-guide/corporations.md
+    - 联盟管理: user-guide/alliances.md
+  - 管理员指南:
+    - 概述: admin-guide/index.md
+    - 插件管理: admin-guide/plugins.md
+    - 用户与权限: admin-guide/user-management.md
+    - 后台任务: admin-guide/tasks.md
+  - 插件开发:
+    - 指南索引: plugin-dev/index.md
+    - 1. 概念速览: plugin-dev/01-concepts.md
+    - 2. 最小可工作插件: plugin-dev/02-minimal-plugin.md
+    - 3. 包结构与入口点: plugin-dev/03-package-structure.md
+    - 4. HelmPlugin 类参考: plugin-dev/04-helmplugin-reference.md
+    - 5. 生命周期钩子: plugin-dev/05-lifecycle-hooks.md
+    - 6. 注册 API 路由: plugin-dev/06-api-router.md
+    - 7. 注册权限: plugin-dev/07-permissions.md
+    - 8. 注册 Celery 任务: plugin-dev/08-celery-tasks.md
+    - 9. ESI 作用域声明: plugin-dev/09-esi-scopes.md
+    - 10. 侧边栏菜单: plugin-dev/10-sidebar.md
+    - 11. iframe 前端: plugin-dev/11-iframe-frontend.md
+    - 12. 插件数据库迁移: plugin-dev/12-database-migrations.md
+    - 13. 插件间通信: plugin-dev/13-extension-registry.md
+    - 14. 本地测试流程: plugin-dev/14-local-testing.md
+    - 15. 发布到 PyPI: plugin-dev/15-publish-pypi.md
+    - 16. API 端点参考: plugin-dev/16-api-endpoints.md
+    - 17. 角色模块扩展: plugin-dev/17-character-extension.md
+  - API 参考: api-reference/index.md
+  - 下载: downloads.md
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/YOUR_GITHUB_USERNAME/helm
+      name: Helm on GitHub

@@ -1,0 +1,48 @@
+{
+  "skill_name": "helm-plugin-dev",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "我想写一个 Helm 插件叫 market-scanner，功能是扫描 EVE 星域市场订单。它需要：一个 GET /scan?region_id=10000002 的接口、一个 Celery 定时任务每小时拉取一次、读取 ESI 市场数据需要 esi-markets.read_orders_from_structure.v1 这个 scope、在侧边栏显示「市场扫描」入口。作者是 Jerry。",
+      "expected_output": "完整的插件包目录，包含：pyproject.toml（含正确 entry point）、market_scanner/__init__.py、market_scanner/plugin.py（含 get_router/get_tasks/get_esi_scopes/get_sidebar_items/get_permissions）、market_scanner/routers.py（含 /scan 端点）、market_scanner/tasks.py（含 celery_app 任务）、本地测试命令（curl + pip install -e）",
+      "files": [],
+      "assertions": [
+        "pyproject.toml 中存在 [project.entry-points.\"helm.plugins\"] 节，值格式为 market-scanner = \"market_scanner.plugin:MarketScannerPlugin\"",
+        "plugin.py 中 name = \"market-scanner\" 且 helm_sdk_version = \">=1.0,<2.0\"",
+        "tasks.py 中使用 from app.tasks.celery_app import celery_app，不新建 Celery 实例",
+        "routers.py 中定义了带 region_id 参数的 GET 端点",
+        "plugin.py 的 get_esi_scopes 返回包含 esi-markets 相关 scope",
+        "plugin.py 的 get_sidebar_items 返回包含侧边栏菜单项",
+        "输出包含本地测试步骤（pip install -e 和 curl 命令）"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "帮我创建一个叫 zkill-tracker 的 Helm 插件，需要存储 EVE 击杀记录到数据库。插件要有自己的数据库表（killmail_id, victim_id, solar_system_id, value, killed_at），提供一个 GET /recent?limit=20 接口查询最近的击杀。作者 Jerry。不需要 Celery 任务，不需要侧边栏。",
+      "expected_output": "完整插件包含：pyproject.toml、zkill_tracker/plugin.py、zkill_tracker/models.py（使用独立 Base 类）、zkill_tracker/routers.py、migrations/alembic.ini、migrations/env.py、migrations/versions/0001_initial.py。数据库 Base 必须是插件自己的，不能继承 Helm core 的 Base。",
+      "files": [],
+      "assertions": [
+        "models.py 使用 class Base(DeclarativeBase): pass 或等效的独立 Base，不从 app.core.database 导入 Base",
+        "migrations/alembic.ini 存在且包含 sqlalchemy.url 配置",
+        "migrations/versions/0001_initial.py 使用 branch_labels 与 Helm 主迁移链隔离",
+        "pyproject.toml entry point 格式正确，key=\"zkill-tracker\"",
+        "routers.py 包含带 limit 参数的 GET /recent 端点",
+        "plugin.py name = \"zkill-tracker\" 且 helm_sdk_version 正确"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "我在开发一个 MCP 插件（helm-plugin-mcp），它需要从其他插件收集数据。请帮我创建这个插件，以及一个示例的「数据提供者」插件（helm-plugin-corp-stats）。MCP 插件通过 extension_registry 的 mcp.resource_provider 扩展点收集数据，corp-stats 插件实现这个扩展点，提供公司统计数据。两个插件的作者都是 Jerry。",
+      "expected_output": "两个完整的插件包：1) helm-plugin-mcp：有消费 mcp.resource_provider 的路由，调用 extension_registry.get_all() 聚合数据；2) helm-plugin-corp-stats：在 on_enable 中调用 extension_registry.register('mcp.resource_provider', self, self.name)，实现 get_mcp_resources() 方法。两者的 pyproject.toml、plugin.py 均完整生成。",
+      "files": [],
+      "assertions": [
+        "mcp 插件的路由中调用 extension_registry.get_all(\"mcp.resource_provider\")",
+        "corp-stats 插件的 on_enable 调用 extension_registry.register(\"mcp.resource_provider\", self, self.name)",
+        "corp-stats 插件实现了 get_mcp_resources 方法（返回 list[dict]）",
+        "两个插件的 pyproject.toml 均有正确的 [project.entry-points.\"helm.plugins\"] 声明",
+        "两个插件的 helm_sdk_version 均为 \">=1.0,<2.0\"",
+        "输出包含对两个插件的验证步骤，包括 extension_registry.list_points() 调试指令"
+      ]
+    }
+  ]
+}
