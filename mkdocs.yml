@@ -1,7 +1,7 @@
 site_name: Helm
 site_description: EVE Online 开源舰队管理平台 — 插件化架构，高可扩展性
-site_url: https://YOUR_GITHUB_USERNAME.github.io/helm-docs/
-repo_url: https://github.com/YOUR_GITHUB_USERNAME/helm
+site_url: https://Jerry-Scintilla.github.io/helm-docs/
+repo_url: https://github.com/Jerry-Scintilla/helm
 repo_name: helm
 edit_uri: ""
 copyright: >
@@ -119,5 +119,5 @@ nav:
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/YOUR_GITHUB_USERNAME/helm
+      link: https://github.com/Jerry-Scintilla/helm
       name: Helm on GitHub
