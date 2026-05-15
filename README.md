@@ -1,22 +1,26 @@
 # Helm Documentation
 
-This repository contains the official documentation for **Helm**, an open-source EVE Online fleet management platform with a plugin-based architecture.
+This repository is the official documentation site for **Helm**, an open-source EVE Online fleet management platform with a plugin-based architecture.
 
-The documentation is published at: **https://YOUR_GITHUB_USERNAME.github.io/helm-docs/**
+To learn more about Helm (including source code, installation, plugin development, etc.), please visit: https://github.com/Jerry-Scintilla/Helm
 
-## Structure
+## Documentation Site
+
+The documentation is live at: https://jerry-scintilla.github.io/Helm-docs/
+
+## Project Structure
 
 ```
 docs/
 ├── index.md               # Homepage
 ├── overview/              # Product overview, features, architecture
 ├── getting-started/       # Installation & configuration
-├── user-guide/            # End-user guides
-├── admin-guide/           # Administrator guides
-├── plugin-dev/            # Plugin development guide (17 chapters)
-├── api-reference/         # Core API reference
-├── downloads/             # Downloadable assets (Claude Code skill)
-└── stylesheets/           # Custom CSS (warm design system)
+├── user-guide/           # End-user guides
+├── admin-guide/          # Administrator guides
+├── plugin-dev/           # Plugin development guide (17 chapters)
+├── api-reference/        # Core API reference
+├── downloads/            # Downloadable assets (Claude Code skill)
+└── stylesheets/          # Custom CSS (warm design system)
 ```
 
 ## Local Development
@@ -47,5 +51,5 @@ mkdocs gh-deploy
 
 ## License
 
-Documentation text: GPL-2.0 (see LICENSE).  
-Helm source code: https://github.com/YOUR_GITHUB_USERNAME/helm
+Documentation text: GPL-3.0 (see [LICENSE](LICENSE)).
+Helm source code: https://github.com/Jerry-Scintilla/Helm
