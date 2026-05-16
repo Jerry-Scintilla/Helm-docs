@@ -10,19 +10,21 @@ Helm 的插件系统支持热加载 — 安装或启用插件后，API 路由立
 |----|------|
 | 名称 | 插件唯一 ID（URL slug） |
 | 版本 | 插件版本号 |
-| 状态 | `enabled`（已启用）/ `disabled`（已禁用） |
+| 状态 | `enabled`（已启用）/ `disabled`（已禁用）/ `error`（错误） |
 | 路由挂载 | 路由是否成功热挂载 |
 | 作者 | 插件作者 |
 | 描述 | 插件功能简介 |
 
 ## 安装插件
 
+安装为**异步操作**：请求提交后立即返回，后台执行 pip install、数据库迁移、路由挂载等步骤。管理界面通过 SSE 实时推送安装日志，安装完成后自动弹出成功提示。
+
 === "从 PyPI 安装"
 
     1. 在插件列表页点击 **安装插件**
     2. 输入 PyPI 包名，例如 `helm-plugin-market-scanner`
-    3. 点击 **安装** — Helm 后台执行 `pip install` 并自动加载插件
-    4. 安装完成后插件出现在列表中（状态为 `disabled`）
+    3. 点击 **安装** — 后台执行 `pip install` 并自动加载插件
+    4. 安装成功后插件出现在列表中，状态为 `enabled`（已启用）
 
     **API 方式：**
     ```bash
@@ -47,7 +49,7 @@ Helm 的插件系统支持热加载 — 安装或启用插件后，API 路由立
 
 ## 启用插件
 
-插件安装后默认为 **禁用** 状态，需要手动启用：
+插件安装后默认为**启用**状态。若手动禁用后需要重新启用：
 
 1. 在插件列表中找到目标插件
 2. 点击 **启用** 按钮
@@ -75,22 +77,20 @@ curl -X POST http://your-helm/api/v1/admin/plugins/market-scanner/disable \
 
 ## 卸载插件
 
-卸载将移除插件记录。可选择是否同时从 Python 环境中卸载包：
+卸载为**异步操作**：请求提交后立即返回 `204`，后台按顺序执行：禁用插件 → 降级数据库迁移（删除插件表）→ pip uninstall → 删除数据库记录。操作完成后，管理界面通过 SSE 收到 `plugin.uninstalled` 事件，自动刷新列表并弹出成功提示。
 
-1. 先禁用插件
-2. 点击 **卸载** 按钮
-3. 选择是否 pip uninstall（保留可以保留插件数据，便于重新安装时恢复）
+1. 点击插件的 **卸载** 按钮
+2. 在确认弹窗中确认操作
+3. 等待成功提示出现（表示后台已完成全部清理）
 
 **API 方式：**
 ```bash
-# 仅卸载插件记录，保留 pip 包
-curl -X DELETE "http://your-helm/api/v1/admin/plugins/market-scanner?pip_remove=false" \
-  -H "Authorization: Bearer <admin-token>"
-
-# 同时 pip uninstall
-curl -X DELETE "http://your-helm/api/v1/admin/plugins/market-scanner?pip_remove=true" \
+curl -X DELETE http://your-helm/api/v1/admin/plugins/market-scanner \
   -H "Authorization: Bearer <admin-token>"
 ```
+
+!!! warning "卸载不可逆"
+    卸载会同时 pip uninstall 包并删除插件的数据库表。若需保留数据，请在卸载前手动备份相关表。
 
 ## 查看插件状态
 
@@ -103,12 +103,11 @@ curl http://your-helm/api/v1/admin/plugins/market-scanner/status \
 ```json
 {
   "name": "market-scanner",
-  "version": "0.1.0",
   "status": "enabled",
+  "is_enabled": true,
   "is_loaded": true,
   "router_mounted": true,
-  "permissions": ["market-scanner.read", "market-scanner.admin"],
-  "esi_scopes": ["esi-markets.read_orders_from_structure.v1"]
+  "error_message": null
 }
 ```
 
@@ -123,7 +122,7 @@ curl http://your-helm/api/v1/admin/plugins/market-scanner/status \
     ```
 
 !!! warning "数据库迁移"
-    如果插件携带数据库迁移脚本，Helm 在插件安装时会自动执行迁移。若迁移失败，插件将无法启用。
+    如果插件携带数据库迁移脚本，Helm 在安装时会自动通过独立子进程执行迁移。若迁移失败，安装将回滚（pip uninstall），插件不会被激活。
 
 !!! tip "开发者"
     如果你是插件开发者，请参阅 [插件开发指南](../plugin-dev/index.md) 了解如何构建和发布插件。下载 [AI 脚手架 Skill](../downloads.md) 可使用 Claude Code 一键生成插件骨架。

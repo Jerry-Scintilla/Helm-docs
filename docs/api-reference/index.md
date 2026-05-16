@@ -96,6 +96,92 @@ SSO 回调端点，处理 CCP 授权码，颁发 JWT Token。
 
 ---
 
+## 市场物价端点
+
+所有端点需要 `character.view` 权限（登录即可）。
+
+### `GET /api/v1/market/prices`
+
+批量查询指定物品的最优买卖价。采用懒加载 + Redis 缓存（默认 TTL 1 小时）。
+
+**查询参数：**
+
+| 参数 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `type_ids` | string | ✅ | 逗号分隔的物品 type_id 列表，最多 50 个 |
+| `region_id` | integer | ❌ | 星域 ID；不传则使用管理员配置的默认区域 |
+
+**响应示例：**
+```json
+{
+  "region_id": 10000002,
+  "prices": {
+    "34": {
+      "type_id": 34,
+      "type_name": "Tritanium",
+      "best_buy": 5.10,
+      "best_sell": 5.47
+    },
+    "35": {
+      "type_id": 35,
+      "type_name": "Pyerite",
+      "best_buy": null,
+      "best_sell": 12.30
+    }
+  }
+}
+```
+
+> `best_buy` / `best_sell` 为 `null` 表示该区域该物品暂无对应方向的挂单。
+
+---
+
+### `GET /api/v1/market/random-item`
+
+从 SDE 随机返回一个可交易的已发布物品（含名称），用于测试市场服务。
+
+**响应示例：**
+```json
+{
+  "type_id": 638,
+  "type_name": "Damage Control I"
+}
+```
+
+!!! note "依赖 SDE"
+    需要先在管理后台完成 SDE 数据导入，否则返回 `404`。
+
+---
+
+## 市场配置端点（管理员）
+
+所有端点需要 `admin` 权限。
+
+### `GET /api/v1/admin/market/config`
+
+获取当前管理员配置的默认查询星域。
+
+**响应示例：**
+```json
+{"region_id": 10000002}
+```
+
+### `PUT /api/v1/admin/market/config`
+
+更新默认查询星域。修改后**立即生效**，无需重启服务。
+
+**请求体：**
+```json
+{"region_id": 10000043}
+```
+
+**响应示例：**
+```json
+{"region_id": 10000043}
+```
+
+---
+
 ## 插件端点（公开）
 
 ### `GET /api/v1/plugins/`

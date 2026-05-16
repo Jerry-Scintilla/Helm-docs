@@ -94,6 +94,7 @@ nav:
     - 插件管理: admin-guide/plugins.md
     - 用户与权限: admin-guide/user-management.md
     - 后台任务: admin-guide/tasks.md
+    - 市场物价服务: admin-guide/market.md
   - 插件开发:
     - 指南索引: plugin-dev/index.md
     - 1. 概念速览: plugin-dev/01-concepts.md

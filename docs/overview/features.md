@@ -63,6 +63,17 @@
 | 从 PyPI 安装 | `POST /api/v1/admin/plugins/install` + `{"package_name": "helm-plugin-xxx"}` |
 | 上传 .whl 包 | `POST /api/v1/admin/plugins/install/upload` |
 
+## 市场物价服务
+
+| 功能 | 说明 |
+|------|------|
+| 懒加载查询 | 仅在被请求时才调用 ESI，不预热全量物品 |
+| 双层缓存 | ESI 原始数据缓存（5min）+ 计算结果缓存（默认 1h，可配） |
+| 批量并发 | 一次请求多个 type_id，并发补全缺失缓存项 |
+| 最优买卖价 | 从挂单列表实时计算 best_buy（最高买单）和 best_sell（最低卖单） |
+| 星域可配 | 管理员可通过后台 UI 按名称搜索并切换默认查询星域，无需重启服务 |
+| 插件可复用 | 其他插件可直接 import `services.market` 或调用 REST 接口使用物价数据 |
+
 ## 后台任务
 
 | 功能 | 说明 |

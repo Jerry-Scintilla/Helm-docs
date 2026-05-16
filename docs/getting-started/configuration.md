@@ -85,6 +85,13 @@ DATABASE_URL=postgresql+asyncpg://helm:mypassword@localhost:5432/helm
 | `ESI_USER_AGENT` | `Helm/1.0` | ESI 请求的 User-Agent（建议包含联系邮箱） |
 | `ESI_REFRESH_BUCKET_SIZE` | `50` | 每个刷新批次的角色数量 |
 
+## 市场物价服务
+
+| 变量 | 默认值 | 说明 |
+|------|-------|------|
+| `MARKET_DEFAULT_REGION_ID` | `10000002` | 出厂默认查询星域（The Forge / Jita）。管理员在后台修改后以 Redis 值为准，此项仅作初始值。 |
+| `MARKET_PRICE_TTL` | `3600` | 物价缓存有效期（秒）。增大减少 ESI 请求；减小提高数据新鲜度。 |
+
 ## 插件系统
 
 | 变量 | 默认值 | 说明 |
