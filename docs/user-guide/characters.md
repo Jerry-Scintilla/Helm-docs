@@ -31,7 +31,7 @@
 
 技能标签页显示角色的技能学习情况：
 
-![技能](https://raw.githubusercontent.com/Helm-docs/img/main/screenshot/%E6%8A%80%E8%83%BD%EF%BC%88%E4%B8%AD%E6%96%87%EF%BC%89.jpeg)
+![技能](../images/技能（中文）.jpeg)
 
 - **已学技能列表**：按技能组分类，显示每项技能的当前等级（1–5）
 - **技能点数**：总技能点、各技能组技能点分布
@@ -44,7 +44,7 @@
 
 资产标签页列出角色名下的所有物品：
 
-![资产](https://raw.githubusercontent.com/Helm-docs/img/main/screenshot/%E8%B5%84%E4%BA%A7%EF%BC%88%E4%B8%AD%E6%96%87%EF%BC%89.jpeg)
+![资产](../images/资产（中文）.jpeg)
 
 - 显示物品图标、名称、数量、所在位置（星系/空间站）
 - 支持按物品名称、类型、位置筛选
@@ -70,7 +70,7 @@
 
 系统通知标签页展示 EVE 游戏内的系统通知，如：
 
-![通知](https://raw.githubusercontent.com/Helm-docs/img/main/screenshot/%E9%80%9A%E7%9F%A5%EF%BC%88%E4%B8%AD%E6%96%87%EF%BC%89.jpeg)
+![通知](../images/通知（中文）.jpeg)
 
 - 结构被攻击
 - 军团申请

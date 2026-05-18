@@ -2,7 +2,7 @@
 
 控制台（Dashboard）是登录 Helm 后的主界面，提供军团和角色数据的总览。
 
-![控制台总览](https://raw.githubusercontent.com/Helm-docs/img/main/screenshot/%E6%80%BB%E8%A7%88%EF%BC%88%E4%B8%AD%E6%96%87%EF%BC%89.jpeg)
+![控制台总览](../images/总览（中文）.jpeg)
 
 ## 界面区域
 

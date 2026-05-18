@@ -31,7 +31,7 @@ Click a character card to open that character's detail page.
 
 The Skills tab shows the character's trained skills:
 
-![Skills](https://raw.githubusercontent.com/Helm-docs/img/main/screenshot/%E6%8A%80%E8%83%BD%EF%BC%88%E8%8B%B1%E6%96%87%EF%BC%89.jpeg)
+![Skills](../images/技能（英文）.jpeg)
 
 - **Trained skills list**: grouped by skill category, showing each skill's current level (1–5)
 - **Skill points**: total SP and SP distribution per skill group
@@ -44,7 +44,7 @@ The Skills tab shows the character's trained skills:
 
 The Assets tab lists all items owned by the character:
 
-![Assets](https://raw.githubusercontent.com/Helm-docs/img/main/screenshot/%E8%B5%84%E4%BA%A7%EF%BC%88%E8%8B%B1%E6%96%87%EF%BC%89.jpeg)
+![Assets](../images/资产（英文）.jpeg)
 
 - Displays item icon, name, quantity, and location (system/station)
 - Supports filtering by item name, type, or location
@@ -70,7 +70,7 @@ The Mail tab shows the character's EVE mail:
 
 The Notifications tab shows in-game system notifications such as:
 
-![Notifications](https://raw.githubusercontent.com/Helm-docs/img/main/screenshot/%E9%80%9A%E7%9F%A5%EF%BC%88%E8%8B%B1%E6%96%87%EF%BC%89.jpeg)
+![Notifications](../images/通知（英文）.jpeg)
 
 - Structure under attack
 - Corporation application
