@@ -1,5 +1,5 @@
 site_name: Helm
-site_description: EVE Online 开源舰队管理平台 — 插件化架构，高可扩展性
+site_description: EVE Online Open-Source Fleet Management Platform — Plugin Architecture, High Extensibility
 site_url: https://Jerry-Scintilla.github.io/helm-docs/
 repo_url: https://github.com/Jerry-Scintilla/helm
 repo_name: helm
@@ -10,20 +10,19 @@ copyright: >
 
 theme:
   name: material
-  language: zh
   palette:
     - scheme: default
       primary: custom
       accent: custom
       toggle:
         icon: material/weather-night
-        name: 切换深色模式
+        name: Switch to dark mode
     - scheme: slate
       primary: custom
       accent: custom
       toggle:
         icon: material/weather-sunny
-        name: 切换浅色模式
+        name: Switch to light mode
   font:
     text: false
     code: false
@@ -46,7 +45,76 @@ extra_css:
 
 plugins:
   - search:
-      lang: zh
+      lang:
+        - zh
+        - en
+  - i18n:
+      docs_structure: suffix
+      languages:
+        - locale: zh
+          default: true
+          name: 中文
+          build: true
+          theme:
+            language: zh
+            palette:
+              - scheme: default
+                primary: custom
+                accent: custom
+                toggle:
+                  icon: material/weather-night
+                  name: 切换深色模式
+              - scheme: slate
+                primary: custom
+                accent: custom
+                toggle:
+                  icon: material/weather-sunny
+                  name: 切换浅色模式
+        - locale: en
+          name: English
+          build: true
+          nav_translations:
+            首页: Home
+            概览: Overview
+            什么是 Helm: What is Helm
+            功能特性: Features
+            系统架构: Architecture
+            快速开始: Getting Started
+            安装部署: Installation
+            配置参考: Configuration
+            用户指南: User Guide
+            概述: Overview
+            EVE SSO 登录: EVE SSO Login
+            控制台: Dashboard
+            角色管理: Character Management
+            军团管理: Corporation Management
+            联盟管理: Alliance Management
+            管理员指南: Admin Guide
+            插件管理: Plugin Management
+            用户与权限: Users & Permissions
+            后台任务: Background Tasks
+            市场物价服务: Market Price Service
+            插件开发: Plugin Development
+            指南索引: Guide Index
+            1. 概念速览: "1. Concepts Overview"
+            2. 最小可工作插件: "2. Minimal Plugin"
+            3. 包结构与入口点: "3. Package Structure"
+            4. HelmPlugin 类参考: "4. HelmPlugin Reference"
+            5. 生命周期钩子: "5. Lifecycle Hooks"
+            6. 注册 API 路由: "6. Register API Routes"
+            7. 注册权限: "7. Register Permissions"
+            8. 注册 Celery 任务: "8. Register Celery Tasks"
+            9. ESI 作用域声明: "9. ESI Scope Declaration"
+            10. 侧边栏菜单: "10. Sidebar Menu"
+            11. iframe 前端: "11. iframe Frontend"
+            12. 插件数据库迁移: "12. Plugin Database Migration"
+            13. 插件间通信: "13. Plugin Communication"
+            14. 本地测试流程: "14. Local Testing"
+            15. 发布到 PyPI: "15. Publish to PyPI"
+            16. API 端点参考: "16. API Endpoints Reference"
+            17. 角色模块扩展: "17. Character Module Extension"
+            API 参考: API Reference
+            下载: Downloads
 
 markdown_extensions:
   - pymdownx.highlight:
@@ -68,7 +136,6 @@ markdown_extensions:
   - tables
   - toc:
       permalink: true
-      title: 目录
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
