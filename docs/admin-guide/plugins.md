@@ -6,6 +6,8 @@ Helm 的插件系统支持热加载 — 安装或启用插件后，API 路由立
 
 进入 **管理后台 → 插件管理**（`/admin/plugins`），可以看到所有已安装插件的列表：
 
+![插件管理](https://raw.githubusercontent.com/Helm-docs/img/main/screenshot/%E6%8F%92%E4%BB%B6%E7%AE%A1%E7%90%86%EF%BC%88%E4%B8%AD%E6%96%87%EF%BC%89.jpeg)
+
 | 列 | 说明 |
 |----|------|
 | 名称 | 插件唯一 ID（URL slug） |

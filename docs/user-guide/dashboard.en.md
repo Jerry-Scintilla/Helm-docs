@@ -2,6 +2,8 @@
 
 The Dashboard is the main screen after logging in to Helm. It provides an overview of corporation and character data.
 
+![Dashboard Overview](https://raw.githubusercontent.com/Helm-docs/img/main/screenshot/%E6%80%BB%E8%A7%88%EF%BC%88%E8%8B%B1%E6%96%87%EF%BC%89.jpeg)
+
 ## Layout Sections
 
 ### Top Stats Cards

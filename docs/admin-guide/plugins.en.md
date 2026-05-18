@@ -6,6 +6,8 @@ Helm's plugin system supports hot-reload — after installing or enabling a plug
 
 Go to **Admin Panel → Plugin Management** (`/admin/plugins`) to see all installed plugins:
 
+![Plugin Management](https://raw.githubusercontent.com/Helm-docs/img/main/screenshot/%E6%8F%92%E4%BB%B6%E7%AE%A1%E7%90%86%EF%BC%88%E8%8B%B1%E6%96%87%EF%BC%89.jpeg)
+
 | Column | Description |
 |--------|-------------|
 | Name | Plugin unique ID (URL slug) |
