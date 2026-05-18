@@ -203,13 +203,18 @@ http://localhost:5174/character/{character_id}/pap  →  http://localhost:5174/c
 子模块 iframe 与普通 iframe 插件使用相同的 HelmSDK（见 [11. iframe 前端](11-iframe-frontend.md)）：
 
 ```javascript
-HelmSDK.init(({ token, apiBase }) => {
+HelmSDK.init(({ token, apiBase, locale }) => {
+  // locale 为 'zh' 或 'en'，可直接用于插件内 i18n 初始化
+  applyLocale(locale)
+
   // 使用 token 调用 Helm API
   fetch(`${apiBase}/api/v1/plugins/fleet-action/pap?character_id=...`, {
     headers: { Authorization: `Bearer ${token}` }
   })
 })
 ```
+
+> 用户切换语言时 iframe 会整页重载，插件无需监听语言变更事件，在 `init` 回调中读取 `locale` 即可。
 
 ### 多子模块
 

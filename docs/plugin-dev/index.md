@@ -20,6 +20,7 @@
 | [9. ESI 作用域声明](09-esi-scopes.md) | `09-esi-scopes.md` |
 | [10. 侧边栏菜单](10-sidebar.md) | `10-sidebar.md` |
 | [11. iframe 前端](11-iframe-frontend.md) | `11-iframe-frontend.md` |
+| [11b. 插件前端设计规范](11b-frontend-design.md) | `11b-frontend-design.md` |
 | [12. 插件自有数据库迁移](12-database-migrations.md) | `12-database-migrations.md` |
 | [13. 插件间通信](13-extension-registry.md) | `13-extension-registry.md` |
 | [14. 本地测试流程](14-local-testing.md) | `14-local-testing.md` |
