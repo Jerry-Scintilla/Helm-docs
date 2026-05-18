@@ -62,6 +62,7 @@ class HelmPlugin(ABC):
 HelmSDK.init(function (ctx) {
     // ctx.token    ← JWT Bearer token
     // ctx.apiBase  ← "http://localhost:8000"
+    // ctx.locale   ← "zh" | "en"（用于插件内 i18n）
 })
 
 // 获取当前 token（在 init 回调后可用）
@@ -110,6 +111,29 @@ class SidebarItem:
 class PluginContext:
     db_session_factory: Any  # = AsyncSessionLocal，async with 使用
     esi_client: Any          # 保留，Phase 4
+
+@dataclass
+class CharacterExtension:
+    character_id: int      # 必须与请求的角色 ID 匹配
+    title: str             # 扩展卡片标题
+    widget: Literal["markdown", "stats", "iframe"]
+    content: Any           # markdown→str; stats→list[{label,value}]; iframe→{url,height?}
+    order: int = 100       # 越小越靠前
+    css_class: str = ""    # 可选自定义 CSS 类名
+
+@dataclass
+class CharacterSubmodule:
+    slug: str                   # URL 片段，全局唯一，不可与内置页冲突
+    label: str                  # 侧边栏显示名
+    iframe_url_template: str    # 含 {character_id} 占位符的 iframe URL
+    icon: str = ""              # 可选 emoji 图标
+    order: int = 100            # 在角色菜单中排列顺序（越小越靠前）
+
+# CharacterExtensionProvider — widget 扩展接口（多重继承）
+class CharacterExtensionProvider:
+    async def get_character_extension(
+        self, character_id: int, db: AsyncSession
+    ) -> CharacterExtension | None: ...
 ```
 
 ---
@@ -200,17 +224,44 @@ def on_install(self, ctx: PluginContext) -> None:
 
 ## 已生效的 API 端点
 
+### 插件管理
+
 | 方法 | 路径 | 说明 |
 |------|------|------|
+| GET | `/api/v1/admin/plugins/` | 列出所有插件 |
+| GET | `/api/v1/admin/plugins/events` | SSE 事件流（`?token=<jwt>`） |
 | POST | `/api/v1/admin/plugins/install` | 从 PyPI 安装 |
+| POST | `/api/v1/admin/plugins/install/upload` | 上传 `.whl` 安装 |
 | POST | `/api/v1/admin/plugins/{name}/enable` | 启用 |
 | POST | `/api/v1/admin/plugins/{name}/disable` | 禁用 |
 | DELETE | `/api/v1/admin/plugins/{name}` | 卸载（?pip_remove=false） |
 | GET | `/api/v1/admin/plugins/{name}/status` | 状态检查 |
 | GET | `/api/v1/plugins/` | 公开：已启用插件清单（含 frontend_url） |
+| GET | `/api/v1/plugins/{name}/ui-schema` | 公开：插件 UI Schema |
 | * | `/api/v1/plugins/{name}/*` | 插件自己注册的端点 |
 | GET | `/plugin-ui/{name}/{file}` | 插件静态文件服务（SPA fallback 到 index.html） |
 | GET | `/plugin-sdk/helm-sdk.js` | Helm SDK，供插件 iframe 内引用 |
+
+### 市场价格服务（内置，插件可直接调用）
+
+所需权限：`character.view`
+
+| 方法 | 路径 | 说明 |
+|------|------|------|
+| GET | `/api/v1/market/prices?type_ids=34,35&region_id=10000002` | 批量查询最优买卖价（最多 50 个 type_id） |
+| GET | `/api/v1/market/random-item` | 随机返回一个有分类的物品（演示/测试用） |
+| GET | `/api/v1/admin/market/config` | 获取当前默认星域 ID |
+| PUT | `/api/v1/admin/market/config` | 更新默认星域 ID |
+
+在插件路由中调用市场服务：
+```python
+from app.services.market import get_market_prices
+
+@router.get("/mineral-prices")
+async def mineral_prices():
+    prices = await get_market_prices([34, 35, 36, 37, 38, 39, 40])
+    return {tid: {"buy": p.best_buy, "sell": p.best_sell} for tid, p in prices.items()}
+```
 
 ---
 

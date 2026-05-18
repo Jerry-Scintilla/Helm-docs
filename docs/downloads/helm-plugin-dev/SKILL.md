@@ -50,6 +50,192 @@ Helm uses an **iframe + HelmSDK** frontend model.
 
 **Plugin authors can use any frontend tech: plain HTML, Vue, React, etc.**
 
+---
+
+## Frontend Design Language
+
+All plugin frontends **must** follow `Markdown/DESIGN.md`. This section is a condensed reference for plugin authors; do not invent colors or typography outside these tokens.
+
+### Color Palette
+
+Plugin UIs typically render in a **dark surface** context (the Helm shell is dark). Use dark-first layout by default.
+
+#### Dark surface tokens (primary use case)
+| Role | Token | Hex |
+|------|-------|-----|
+| Page background | Deep Dark | `#141413` |
+| Elevated container | Dark Surface | `#30302e` |
+| Primary text | Ivory | `#faf9f5` |
+| Secondary text | Warm Silver | `#b0aea5` |
+| Tertiary / metadata | Stone Gray | `#87867f` |
+| Borders | Border Dark | `#30302e` |
+| Primary CTA | Terracotta Brand | `#c96442` |
+| CTA text | Ivory | `#faf9f5` |
+| Error state | Error Crimson | `#b53333` |
+| Error background | `#2a1a1a` | warm dark red tint |
+| Focus ring | Focus Blue | `#3898ec` |
+
+#### Light surface tokens (use when plugin content demands it)
+| Role | Token | Hex |
+|------|-------|-----|
+| Page background | Parchment | `#f5f4ed` |
+| Card surface | Ivory | `#faf9f5` |
+| Primary text | Anthropic Near Black | `#141413` |
+| Secondary text | Olive Gray | `#5e5d59` |
+| Tertiary / metadata | Stone Gray | `#87867f` |
+| Borders (light) | Border Cream | `#f0eee6` |
+| Borders (prominent) | Border Warm | `#e8e6dc` |
+| Secondary button bg | Warm Sand | `#e8e6dc` |
+| Secondary button text | Charcoal Warm | `#4d4c48` |
+
+> **Rule**: every gray must have a yellow-brown undertone. No cool blue-grays anywhere.
+
+### Typography
+
+Helm ships `Anthropic Serif`, `Anthropic Sans`, and `Anthropic Mono`. Always declare them with fallbacks:
+
+```css
+font-family: 'Anthropic Serif', Georgia, serif;        /* headings */
+font-family: 'Anthropic Sans', system-ui, sans-serif;  /* body / UI */
+font-family: 'Anthropic Mono', monospace;              /* code */
+```
+
+| Role | Family | Size | Weight | Line Height |
+|------|--------|------|--------|-------------|
+| Page / section title | Serif | 1.6rem (25.6px) | 500 | 1.20 |
+| Card / widget title | Serif | 1.3rem (20.8px) | 500 | 1.20 |
+| Body / UI text | Sans | 1rem (16px) | 400 | 1.60 |
+| Secondary body | Sans | 0.94rem (15px) | 400 | 1.60 |
+| Caption / metadata | Sans | 0.88rem (14px) | 400 | 1.43 |
+| Table header | Sans | 0.8rem (12.8px) | 500 | 1.25 | + uppercase + 0.05em spacing |
+| Code / terminal | Mono | 0.94rem (15px) | 400 | 1.60 |
+
+**Never** use Serif at weight 700+. Weight 500 is the maximum for all serif headings.
+
+### Component Patterns
+
+#### Buttons
+```css
+/* Primary CTA */
+.btn-primary {
+  background: #c96442; color: #faf9f5;
+  border-radius: 8px; padding: 8px 16px;
+  box-shadow: #c96442 0px 0px 0px 0px, #c96442 0px 0px 0px 1px;
+  border: none; font-family: 'Anthropic Sans', sans-serif; font-size: 1rem;
+}
+
+/* Secondary (dark surface) */
+.btn-secondary {
+  background: #30302e; color: #b0aea5;
+  border-radius: 8px; padding: 8px 16px;
+  box-shadow: #30302e 0px 0px 0px 0px, #4d4c48 0px 0px 0px 1px;
+  border: none;
+}
+
+/* Secondary (light surface) */
+.btn-secondary-light {
+  background: #e8e6dc; color: #4d4c48;
+  border-radius: 8px; padding: 0px 12px 0px 8px;
+  box-shadow: #e8e6dc 0px 0px 0px 0px, #d1cfc5 0px 0px 0px 1px;
+  border: none;
+}
+```
+
+#### Cards & Containers
+```css
+.card {
+  background: #30302e;                     /* dark surface */
+  border: 1px solid #3d3d3a;
+  border-radius: 8px;                      /* standard card */
+  padding: 24px;
+}
+.card-featured {
+  border-radius: 16px;                     /* elevated / hero card */
+}
+.card-shadow {
+  box-shadow: rgba(0,0,0,0.05) 0px 4px 24px;
+}
+```
+
+#### Tables
+```css
+table { width: 100%; border-collapse: collapse; }
+th {
+  color: #87867f; font-size: 0.8rem; text-transform: uppercase;
+  letter-spacing: 0.05em; font-family: 'Anthropic Sans', sans-serif;
+  font-weight: 500; padding: 8px 12px;
+}
+td { padding: 8px 12px; color: #b0aea5; }
+tr { border-bottom: 1px solid #30302e; }
+tr:last-child { border-bottom: none; }
+```
+
+#### Modals (replace `alert()` / `confirm()`)
+```html
+<!-- Use <dialog> or CSS overlay — never alert()/confirm() -->
+<dialog id="confirm-modal" class="helm-modal">
+  <p class="modal-message"></p>
+  <div class="modal-actions">
+    <button class="btn-primary" id="modal-ok">确认</button>
+    <button class="btn-secondary" id="modal-cancel">取消</button>
+  </div>
+</dialog>
+```
+```css
+.helm-modal {
+  background: #30302e; color: #faf9f5;
+  border: 1px solid #4d4c48; border-radius: 12px;
+  padding: 24px; min-width: 320px;
+}
+.helm-modal::backdrop { background: rgba(0,0,0,0.6); }
+```
+
+#### Status / Badge chips
+```css
+.badge {
+  display: inline-block; font-size: 0.75rem; font-weight: 500;
+  padding: 2px 8px; border-radius: 24px;
+  font-family: 'Anthropic Sans', sans-serif;
+}
+.badge-active   { background: rgba(201,100,66,0.15); color: #c96442; }
+.badge-inactive { background: rgba(176,174,165,0.10); color: #87867f; }
+.badge-error    { background: rgba(181,51,51,0.15); color: #b53333; }
+```
+
+#### Empty & Error states
+```css
+.empty-state {
+  color: #5e5d59; padding: 48px 0; text-align: center;
+  font-size: 0.94rem; font-family: 'Anthropic Sans', sans-serif;
+}
+.error-state {
+  color: #b53333; background: #2a1a1a;
+  border-radius: 8px; padding: 16px;
+  font-family: 'Anthropic Sans', sans-serif;
+}
+```
+
+### Design Do's & Don'ts
+
+**Do:**
+- Use `#141413` (Deep Dark) as dark page background — not `#000`, not `#1a1a1a`
+- Use ring shadows (`0px 0px 0px 1px`) for interactive states instead of drop shadows
+- Use Anthropic Serif weight 500 for all headings — never weight 700+
+- Keep all grays warm-toned (yellow-brown undertone)
+- Use generous body line-height 1.60
+- Use `border-radius: 8px` for standard cards/buttons, `12px` for inputs, `16–32px` for hero containers
+- Use `<dialog>` element for confirmation flows (sandbox blocks `confirm()`)
+
+**Don't:**
+- Don't use cool blue-grays — no `#6b7280`, `#9ca3af`, or similar
+- Don't use `alert()`, `confirm()`, `prompt()`, or `window.open()` (sandbox-blocked)
+- Don't use `#ffffff` as page background — use Parchment or Deep Dark
+- Don't introduce saturated colors beyond Terracotta (`#c96442`)
+- Don't use sharp corners (< 6px) on cards or buttons
+- Don't use heavy drop shadows — prefer ring shadows
+
+---
+
 ### Sandbox constraints (IMPORTANT)
 
 Helm mounts the plugin iframe with `sandbox="allow-scripts allow-same-origin allow-forms"`.
@@ -80,11 +266,13 @@ Ask the user these questions in a single message before writing any code:
    - [ ] Sidebar menu item
    - [ ] Frontend pages (iframe, any tech — describe desired UI)
    - [ ] Respond to character/corporation data events
+   - [ ] Inject widget cards or sub-pages into the character module (CharacterExtensionProvider / CharacterSubmodule)
    - [ ] Implement an ExtensionRegistry extension point (provide service to other plugins)
    - [ ] Consume an ExtensionRegistry extension point (use another plugin's service)
 4. **Author name**
 5. **If frontend**: describe the pages and data the plugin needs to show
 6. **If ExtensionRegistry**: which extension point name?
+7. **If character extension**: widget type (`stats` / `markdown` / `iframe`) or full sub-page (submodule)?
 
 Pre-fill from the user's original request when possible.
 
@@ -214,6 +402,51 @@ Add only the methods the user actually needs:
         extension_registry.register("{point_name}", self, self.name)
 ```
 
+**If has character submodule (sub-page inside character module):**
+```python
+    def get_character_submodules(self):
+        from app.plugins.base import CharacterSubmodule
+        base = self.get_frontend_dev_url() or f"/plugin-ui/{self.name}"
+        return [
+            CharacterSubmodule(
+                slug="{slug}",
+                label="{label}",
+                icon="{emoji}",
+                iframe_url_template=f"{base}/character/{{character_id}}/{slug}",
+                order=10,
+            )
+        ]
+```
+
+> No need to register to ExtensionRegistry — Helm auto-serializes submodules on install/enable.
+
+**If has character widget extension (stats/markdown/iframe card in character overview):**
+```python
+    def on_enable(self, ctx: PluginContext) -> None:
+        from app.plugins.registry import extension_registry
+        extension_registry.register("character.extension", self, self.name)
+
+    async def get_character_extension(self, character_id: int, db):
+        from app.plugins.base import CharacterExtension
+        return CharacterExtension(
+            character_id=character_id,
+            title="{card_title}",
+            widget="stats",   # "stats" | "markdown" | "iframe"
+            content=[
+                {"label": "指标", "value": 0},
+            ],
+            order=10,
+        )
+```
+
+Import `CharacterExtensionProvider` when implementing widget extensions:
+```python
+from app.plugins.base import HelmPlugin, PluginContext, PermissionDef, SidebarItem, CharacterExtensionProvider, CharacterExtension
+
+class {ClassName}Plugin(HelmPlugin, CharacterExtensionProvider):
+    ...
+```
+
 ### File: `{pkg_name}/routers.py` (only if has router)
 
 ```python
@@ -263,24 +496,102 @@ Generate a functional starter page that:
   <title>{label}</title>
   <script src="/plugin-sdk/helm-sdk.js"></script>
   <style>
+    /* ── Design tokens (DESIGN.md — dark surface) ── */
+    :root {
+      --bg:          #141413;   /* Deep Dark */
+      --surface:     #30302e;   /* Dark Surface */
+      --border:      #3d3d3a;   /* Border Dark */
+      --text-primary:#faf9f5;   /* Ivory */
+      --text-body:   #b0aea5;   /* Warm Silver */
+      --text-muted:  #87867f;   /* Stone Gray */
+      --text-dim:    #5e5d59;   /* Olive Gray */
+      --brand:       #c96442;   /* Terracotta Brand */
+      --error-text:  #b53333;   /* Error Crimson */
+      --error-bg:    #2a1a1a;
+      --radius-sm:   8px;
+      --radius-md:   12px;
+      --radius-lg:   16px;
+      --font-serif:  'Anthropic Serif', Georgia, serif;
+      --font-sans:   'Anthropic Sans', system-ui, sans-serif;
+    }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #1e1e1c;
-      color: #b0aea5;
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--text-body);
       padding: 24px 28px;
+      line-height: 1.60;
     }
-    h1 { color: #f5f4ed; font-size: 1.4rem; margin-bottom: 16px; }
+
+    h1 {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 500;
+      line-height: 1.20;
+      color: var(--text-primary);
+      margin-bottom: 20px;
+    }
+
+    /* Table */
     table { width: 100%; border-collapse: collapse; }
-    th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid #30302e; }
-    th { color: #87867f; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; }
-    .empty { color: #5e5d59; padding: 32px 0; text-align: center; }
-    .error { color: #b53333; padding: 16px; background: #2a1a1a; border-radius: 8px; }
+    thead tr { border-bottom: 1px solid var(--border); }
+    tbody tr { border-bottom: 1px solid var(--border); }
+    tbody tr:last-child { border-bottom: none; }
+    th {
+      text-align: left; padding: 8px 12px;
+      color: var(--text-muted); font-size: 0.8rem; font-weight: 500;
+      text-transform: uppercase; letter-spacing: 0.05em;
+      font-family: var(--font-sans);
+    }
+    td {
+      text-align: left; padding: 10px 12px;
+      color: var(--text-body); font-size: 0.94rem;
+    }
+
+    /* States */
+    .empty-state {
+      color: var(--text-dim); padding: 48px 0;
+      text-align: center; font-size: 0.94rem;
+    }
+    .error-state {
+      color: var(--error-text); background: var(--error-bg);
+      border-radius: var(--radius-sm); padding: 16px;
+    }
+
+    /* Buttons */
+    .btn-primary {
+      background: var(--brand); color: var(--text-primary);
+      border: none; border-radius: var(--radius-sm);
+      padding: 8px 16px; cursor: pointer;
+      font-family: var(--font-sans); font-size: 1rem;
+      box-shadow: var(--brand) 0px 0px 0px 0px, var(--brand) 0px 0px 0px 1px;
+    }
+    .btn-primary:hover { opacity: 0.9; }
+
+    /* Modal (replaces alert/confirm — sandbox-safe) */
+    dialog.helm-modal {
+      background: var(--surface); color: var(--text-primary);
+      border: 1px solid var(--border); border-radius: var(--radius-md);
+      padding: 24px; min-width: 320px;
+    }
+    dialog.helm-modal::backdrop { background: rgba(0,0,0,0.6); }
+    .modal-message { margin-bottom: 16px; font-size: 0.94rem; }
+    .modal-actions { display: flex; gap: 8px; justify-content: flex-end; }
   </style>
 </head>
 <body>
   <h1>{label}</h1>
-  <div id="root"><p class="empty">正在加载…</p></div>
+  <div id="root"><p class="empty-state">正在加载…</p></div>
+
+  <!-- sandbox-safe confirm modal — never use alert()/confirm() -->
+  <dialog id="confirm-modal" class="helm-modal">
+    <p class="modal-message" id="modal-msg"></p>
+    <div class="modal-actions">
+      <button class="btn-primary" id="modal-ok">确认</button>
+      <button style="background:var(--surface);color:var(--text-body);border:1px solid var(--border);border-radius:8px;padding:8px 16px;cursor:pointer" id="modal-cancel">取消</button>
+    </div>
+  </dialog>
 
   <script>
     HelmSDK.init(function (ctx) {
@@ -294,7 +605,7 @@ Generate a functional starter page that:
         .then(function (data) {
           var items = Array.isArray(data) ? data : (data.items || [])
           if (items.length === 0) {
-            document.getElementById('root').innerHTML = '<p class="empty">暂无数据</p>'
+            document.getElementById('root').innerHTML = '<p class="empty-state">暂无数据</p>'
             return
           }
           var keys = Object.keys(items[0])
@@ -311,7 +622,7 @@ Generate a functional starter page that:
         })
         .catch(function (err) {
           document.getElementById('root').innerHTML =
-            '<div class="error">加载失败：' + err.message + '</div>'
+            '<div class="error-state">加载失败：' + err.message + '</div>'
         })
     })
   </script>
@@ -478,4 +789,16 @@ print(extension_registry.list_points())
 - [ ] If frontend: `pyproject.toml` includes `"frontend/dist/**"` in package-data
 - [ ] If frontend dev URL set: remind user to set it to `None` before publishing
 - [ ] If frontend: NO `alert()`, `confirm()`, `prompt()`, or `window.open()` — use `<dialog>` or CSS overlay
+- [ ] If frontend: page background is `#141413` (Deep Dark), NOT `#000`, `#1a1a1a`, or `#1e1e1c`
+- [ ] If frontend: all grays use warm-toned tokens (`#b0aea5`, `#87867f`, `#5e5d59`) — no cool blue-grays
+- [ ] If frontend: headings use `font-family: 'Anthropic Serif', Georgia, serif` at `font-weight: 500`
+- [ ] If frontend: body/UI text uses `font-family: 'Anthropic Sans', system-ui, sans-serif`
+- [ ] If frontend: Terracotta (`#c96442`) used only for primary CTA — not decorative or secondary elements
+- [ ] If frontend: buttons and cards use ring shadows (`0px 0px 0px 1px`) not heavy drop shadows
+- [ ] If frontend: border-radius ≥ 6px on all interactive elements (8px standard, 12px for inputs)
+- [ ] If frontend: CSS custom properties declared under `:root` using the canonical token names from DESIGN.md
+- [ ] If character submodule: `iframe_url_template` contains `{character_id}` placeholder (literal braces in f-string: `{{character_id}}`)
+- [ ] If character submodule: `slug` does not conflict with built-ins (`overview` `wallet` `skills` `assets` `mail` `notifications`)
+- [ ] If character widget: class inherits both `HelmPlugin` AND `CharacterExtensionProvider`
+- [ ] If character widget: `on_enable` registers to `"character.extension"` extension point
 - [ ] No UISchema, PluginTable, or PluginForm references — those are removed

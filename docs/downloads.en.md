@@ -15,13 +15,17 @@
 
 The Skill must be installed in your **Helm project directory** (your Helm repo root), not in the global Claude configuration directory.
 
-**Step 1: Create the directory structure in the Helm project root**
+**Step 1: Download and extract the zip**
+
+<a href="helm-plugin-dev.zip" download="helm-plugin-dev.zip" class="md-button md-button--primary">Download helm-plugin-dev.zip</a>
+
+Extract the archive and place the `helm-plugin-dev/` folder directly into the `.claude/skills/` directory of your Helm project:
 
 ```
 your-helm-project/
 └── .claude/
     └── skills/
-        └── helm-plugin-dev/
+        └── helm-plugin-dev/      ← extract here
             ├── SKILL.md
             ├── references/
             │   └── api.md
@@ -29,17 +33,7 @@ your-helm-project/
                 └── evals.json
 ```
 
-**Step 2: Download the files**
-
-Download the following three files and place them in the corresponding directories:
-
-| File | Download | Target Path |
-|------|----------|-------------|
-| `SKILL.md` | [Download](downloads/helm-plugin-dev/SKILL.md) | `.claude/skills/helm-plugin-dev/SKILL.md` |
-| `api.md` | [Download](downloads/helm-plugin-dev/references/api.md) | `.claude/skills/helm-plugin-dev/references/api.md` |
-| `evals.json` | [Download](downloads/helm-plugin-dev/evals/evals.json) | `.claude/skills/helm-plugin-dev/evals/evals.json` |
-
-**Step 3: Use in Claude Code**
+**Step 2: Use in Claude Code**
 
 Open Claude Code (VS Code extension or CLI) in the Helm project directory and type:
 

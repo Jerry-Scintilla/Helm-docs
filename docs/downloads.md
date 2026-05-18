@@ -15,13 +15,17 @@
 
 Skill 需要安装到你的 **Helm 项目目录**下（`C:\Users\jerry\PycharmProjects\Helm` 或你的 Helm 仓库根目录），而不是全局 Claude 配置目录。
 
-**第 1 步：在 Helm 项目根目录创建目录结构**
+**第 1 步：下载压缩包并解压**
+
+<a href="helm-plugin-dev.zip" download="helm-plugin-dev.zip" class="md-button md-button--primary">下载 helm-plugin-dev.zip</a>
+
+解压后将 `helm-plugin-dev/` 文件夹整体放入你的 Helm 项目的 `.claude/skills/` 目录：
 
 ```
 your-helm-project/
 └── .claude/
     └── skills/
-        └── helm-plugin-dev/
+        └── helm-plugin-dev/      ← 解压后直接放这里
             ├── SKILL.md
             ├── references/
             │   └── api.md
@@ -29,17 +33,7 @@ your-helm-project/
                 └── evals.json
 ```
 
-**第 2 步：下载文件**
-
-下载以下三个文件，放入对应目录：
-
-| 文件 | 下载链接 | 放置路径 |
-|------|---------|---------|
-| `SKILL.md` | [下载](downloads/helm-plugin-dev/SKILL.md) | `.claude/skills/helm-plugin-dev/SKILL.md` |
-| `api.md` | [下载](downloads/helm-plugin-dev/references/api.md) | `.claude/skills/helm-plugin-dev/references/api.md` |
-| `evals.json` | [下载](downloads/helm-plugin-dev/evals/evals.json) | `.claude/skills/helm-plugin-dev/evals/evals.json` |
-
-**第 3 步：在 Claude Code 中使用**
+**第 2 步：在 Claude Code 中使用**
 
 打开 Helm 项目目录中的 Claude Code（VSCode 扩展或 CLI），输入：
 
