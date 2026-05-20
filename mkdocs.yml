@@ -96,6 +96,7 @@ plugins:
             联盟管理: Alliance Management
             管理员指南: Admin Guide
             插件管理: Plugin Management
+            插件市场: Plugin Marketplace
             用户与权限: Users & Permissions
             后台任务: Background Tasks
             市场物价服务: Market Price Service
@@ -164,6 +165,7 @@ nav:
   - 管理员指南:
     - 概述: admin-guide/index.md
     - 插件管理: admin-guide/plugins.md
+    - 插件市场: admin-guide/plugin-marketplace.md
     - 用户与权限: admin-guide/user-management.md
     - 后台任务: admin-guide/tasks.md
     - 市场物价服务: admin-guide/market.md

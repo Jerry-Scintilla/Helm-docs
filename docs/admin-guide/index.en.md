@@ -17,6 +17,7 @@ After logging in, click your character avatar in the top-right corner → **Admi
 | Users & Permissions | `/admin/users` | Assign roles and permissions to users |
 | SDE Data | `/admin/sde` | Import / update EVE static data (SDE) |
 | Plugin Management | `/admin/plugins` | Install, enable, disable, and uninstall plugins |
+| **Plugin Marketplace** | — | Browse official plugins, versions, and feature descriptions |
 | Task History | `/admin/tasks` | View background task execution records |
 | **Market Prices** | `/admin/market` | Set the default query region and test the price service |
 
@@ -24,6 +25,7 @@ After logging in, click your character avatar in the top-right corner → **Admi
 
 | Task | Guide |
 |------|-------|
+| Browse available plugins | [Plugin Marketplace](plugin-marketplace.md) |
 | Install a plugin | [Plugin Management → Install Plugin](plugins.md#install-a-plugin) |
 | Assign permissions to a user | [Users & Permissions → Assign Permissions](user-management.md#assign-permissions) |
 | View task execution logs | [Background Tasks → Task History](tasks.md#task-history) |
