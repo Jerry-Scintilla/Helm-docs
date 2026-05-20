@@ -153,6 +153,18 @@ body {
   font-weight: 500;
 }
 
+/* Helm wheel logo in the nav bar */
+.md-header__button.md-logo {
+  padding: 6px;
+  margin-right: 2px;
+}
+.md-header__button.md-logo img,
+.md-header__button.md-logo svg {
+  height: 28px;
+  width: 28px;
+  display: block;
+}
+
 .md-tabs {
   background-color: var(--helm-near-black);
   border-bottom: 1px solid var(--helm-dark-surface);
