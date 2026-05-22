@@ -51,12 +51,16 @@ curl -X POST http://your-helm/api/v1/admin/tasks/sync-character \
 
 已启用的插件注册的 Celery 任务也会出现在任务历史中，任务名称通常为 `{plugin_name}.{task_name}` 格式。
 
-!!! important "Worker 重启"
-    当新插件注册了 Celery 任务后，需要**重启 Celery Worker** 才能使任务生效：
+!!! note "Worker 热注册"
+    热安装/启用插件时，Helm 会向运行中的 Worker 广播控制命令，使其导入插件任务模块并立即生效——**通常无需重启 Worker**。仅当 Worker 在插件安装*之前*已启动且未收到广播（如安装时 Worker 离线）时，才需软重启补登记：
 
     ```bash
     celery -A app.tasks.celery_app worker --loglevel=info
     ```
+
+### 插件定时任务
+
+插件可通过 `get_beat_schedule()` 声明周期性定时任务。安装/启用后，这些任务会**热加载**进运行中的 Celery Beat（无需重启 Beat），并与内置定时任务一同出现在「定时任务」列表中，条目名为 `{plugin_name}:{条目键}`。管理员可像内置任务一样**在运行时覆盖其执行间隔**或手动触发。禁用/卸载插件时对应条目自动移除。
 
 ## Worker 状态监控
 

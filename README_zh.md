@@ -49,6 +49,10 @@ mkdocs gh-deploy
 2. 运行 `mkdocs serve` 预览效果
 3. 提交 Pull Request
 
+## 安全
+
+如果你发现 Helm 存在安全漏洞，请发送邮件至 **jerrycaocao@126.com**，而不是在 GitHub 上公开提交 Issue。
+
 ## 许可证
 
 文档内容采用 GPL-3.0 许可证（见 [LICENSE](LICENSE)）。

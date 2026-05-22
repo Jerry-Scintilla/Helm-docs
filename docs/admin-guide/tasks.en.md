@@ -51,12 +51,16 @@ curl -X POST http://your-helm/api/v1/admin/tasks/sync-character \
 
 Celery tasks registered by enabled plugins also appear in the task history. Task names typically follow the `{plugin_name}.{task_name}` format.
 
-!!! important "Worker Restart"
-    When a new plugin registers Celery tasks, you must **restart the Celery Worker** for the tasks to take effect:
+!!! note "Worker Hot-Registration"
+    When a plugin is hot-installed/enabled, Helm broadcasts a control command to running Workers so they import the plugin's task modules and take effect immediately — **no Worker restart is normally required**. A soft restart is only needed if a Worker was started *before* the plugin install and missed the broadcast (e.g. it was offline at install time):
 
     ```bash
     celery -A app.tasks.celery_app worker --loglevel=info
     ```
+
+### Plugin Scheduled Tasks
+
+Plugins can declare periodic tasks via `get_beat_schedule()`. On install/enable these are **hot-loaded** into the running Celery Beat (no Beat restart needed) and appear in the Scheduled Tasks list alongside built-in ones, named `{plugin_name}:{entry_key}`. Admins can **override their interval at runtime** or trigger them manually, just like built-in tasks. Entries are removed automatically when the plugin is disabled/uninstalled.
 
 ## Worker Status Monitoring
 

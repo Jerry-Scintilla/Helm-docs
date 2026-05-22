@@ -21,6 +21,15 @@ Go to **Admin Panel → Plugin Management** (`/admin/plugins`) to see all instal
 
 Installation is an **async operation**: the request returns immediately and the backend runs pip install, database migration, and route mounting in the background. The admin UI streams install logs via SSE and shows a success notification when complete.
 
+=== "Install from Marketplace"
+
+    1. Switch to the **Marketplace** tab
+    2. Browse or search for the plugin you need (supports filtering by name, description, or tags)
+    3. Click the **Install** button on a plugin card
+    4. Helm automatically pulls and installs the package from its listed source (PyPI or TestPyPI)
+
+    The marketplace index is hosted on GitHub and automatically refreshed every 6 hours. Administrators can also click **Refresh Marketplace** to force an update. See [Plugin Marketplace](plugin-marketplace.md) for details.
+
 === "Install from PyPI"
 
     1. On the plugin list page, click **Install Plugin**
@@ -30,10 +39,17 @@ Installation is an **async operation**: the request returns immediately and the 
 
     **Via API:**
     ```bash
+    # Install from PyPI (default)
     curl -X POST http://your-helm/api/v1/admin/plugins/install \
       -H "Authorization: Bearer <admin-token>" \
       -H "Content-Type: application/json" \
-      -d '{"package_name": "helm-plugin-market-scanner"}'
+      -d '{"package_name": "helm-plugin-market-scanner", "source": "pypi"}'
+
+    # Install from TestPyPI
+    curl -X POST http://your-helm/api/v1/admin/plugins/install \
+      -H "Authorization: Bearer <admin-token>" \
+      -H "Content-Type: application/json" \
+      -d '{"package_name": "helm-plugin-market-scanner", "source": "testpypi"}'
     ```
 
 === "Upload .whl Package"

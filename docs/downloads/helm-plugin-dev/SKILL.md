@@ -365,6 +365,31 @@ Add only the methods the user actually needs:
         return ["{pkg_name}.tasks"]
 ```
 
+**If has scheduled (Beat) tasks:**
+```python
+    def get_beat_schedule(self) -> dict:
+        # Structure matches Celery's native beat_schedule.
+        # Keys are local entry names (unique within the plugin); Helm namespaces
+        # them as "{name}:<key>" before injecting into the running Beat process.
+        # "task" MUST be a task registered by one of get_tasks()' modules.
+        return {
+            "analyze-all": {
+                "task": "{name}.analyze_all",   # the @celery_app.task name
+                "schedule": 300.0,              # interval in seconds (float)
+                "options": {"queue": "default"},
+            },
+        }
+```
+
+> Schedules are **hot-loaded** — installing/enabling the plugin pushes them to a
+> Redis hash that `HelmBeatScheduler` polls each tick, so no Beat restart is
+> needed. Disabling/uninstalling withdraws them. Admins can override each
+> entry's interval at runtime from the task admin UI (`{name}:analyze-all`),
+> exactly like built-in scheduled tasks. The worker must already have the task
+> registered (it is, via `get_tasks()` + the install-time hot-registration
+> broadcast), otherwise Beat will dispatch a task the worker rejects as
+> unregistered.
+
 **If has permissions:**
 ```python
     def get_permissions(self) -> list[PermissionDef]:

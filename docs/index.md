@@ -75,3 +75,6 @@ FastAPI 后端 + Vue 3 / Naive UI 前端，PostgreSQL 持久化，Alembic 数据
 
 !!! note "关于 EVE Online"
     Helm 是 EVE Online 的独立玩家工具，未获得 CCP Games 官方授权或背书。EVE Online 及相关内容为 CCP Games 的商标。
+
+!!! warning "安全漏洞报告"
+    如发现安全漏洞，请发送邮件至 [jerrycaocao@126.com](mailto:jerrycaocao@126.com)，勿公开提交 Issue。

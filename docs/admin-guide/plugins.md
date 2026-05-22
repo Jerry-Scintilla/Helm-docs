@@ -21,6 +21,15 @@ Helm 的插件系统支持热加载 — 安装或启用插件后，API 路由立
 
 安装为**异步操作**：请求提交后立即返回，后台执行 pip install、数据库迁移、路由挂载等步骤。管理界面通过 SSE 实时推送安装日志，安装完成后自动弹出成功提示。
 
+=== "从插件市场安装"
+
+    1. 切换到 **插件市场** 标签页
+    2. 浏览或搜索所需插件（支持按名称、描述、标签筛选）
+    3. 点击插件卡片上的 **安装** 按钮
+    4. 系统自动从对应来源（PyPI 或 TestPyPI）拉取并安装
+
+    插件市场索引由 GitHub 托管，每 6 小时自动刷新一次缓存。管理员也可点击 **刷新市场** 手动更新。参见 [插件市场](plugin-marketplace.md) 了解详情。
+
 === "从 PyPI 安装"
 
     1. 在插件列表页点击 **安装插件**
@@ -30,10 +39,17 @@ Helm 的插件系统支持热加载 — 安装或启用插件后，API 路由立
 
     **API 方式：**
     ```bash
+    # 从 PyPI 安装（默认）
     curl -X POST http://your-helm/api/v1/admin/plugins/install \
       -H "Authorization: Bearer <admin-token>" \
       -H "Content-Type: application/json" \
-      -d '{"package_name": "helm-plugin-market-scanner"}'
+      -d '{"package_name": "helm-plugin-market-scanner", "source": "pypi"}'
+
+    # 从 TestPyPI 安装
+    curl -X POST http://your-helm/api/v1/admin/plugins/install \
+      -H "Authorization: Bearer <admin-token>" \
+      -H "Content-Type: application/json" \
+      -d '{"package_name": "helm-plugin-market-scanner", "source": "testpypi"}'
     ```
 
 === "上传 .whl 包"

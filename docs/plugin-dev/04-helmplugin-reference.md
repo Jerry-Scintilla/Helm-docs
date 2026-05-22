@@ -38,6 +38,7 @@ from app.plugins.base import (
 | `get_permissions()` | `list[PermissionDef]` | 安装时 upsert 到 permissions 表 |
 | `get_esi_scopes()` | `list[str]` | ESI OAuth 作用域声明 |
 | `get_tasks()` | `list[str]` | Celery 任务模块路径列表 |
+| `get_beat_schedule()` | `dict` | 周期性（Beat）定时任务，热加载；结构同 Celery `beat_schedule`。见 [8. 注册 Celery 任务 § 定时任务](08-celery-tasks.md) |
 | `get_sidebar_items()` | `list[SidebarItem]` | 注入前端全局侧边栏 |
 | `get_character_submodules()` | `list[CharacterSubmodule]` | 注入角色模块子页面（路由 + 侧边栏）。见 [17. 角色模块扩展 § 子模块](17-character-extension.md) |
 | `get_static_dir()` | `Path \| None` | 返回前端编译产物目录（含 `index.html`） |

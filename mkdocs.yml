@@ -45,6 +45,9 @@ theme:
 extra_css:
   - stylesheets/extra.css
 
+extra_javascript:
+  - assets/marketplace-widget.js
+
 hooks:
   - hooks.py
 
