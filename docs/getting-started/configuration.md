@@ -64,9 +64,11 @@ DATABASE_URL=postgresql+asyncpg://helm:mypassword@localhost:5432/helm
 
 ## 管理员配置
 
+Helm 不预置任何管理员账号，也不存在"第一个登录用户自动成为管理员"的机制。首次启动时系统会生成一条一次性授权链接，详见 [超级管理员初始化](../admin-guide/superuser-setup.md)。
+
 | 变量 | 默认值 | 说明 |
 |------|-------|------|
-| `FIRST_SUPERUSER_CHAR_ID` | — | 首个超级管理员的 EVE 角色 ID（若留空，则第一个登录用户自动成为管理员） |
+| `APP_URL` | — | 应用对外访问地址，用于生成超级管理员授权链接，例如 `https://your-domain.com` |
 
 ## Celery / 任务队列
 
